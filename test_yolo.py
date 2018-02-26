@@ -58,15 +58,6 @@ parser.add_argument(
 Object = namedtuple('Object', ['class_name', 'top', 'left', 'bottom', 'right', 'score'])
 
 class YoloModel:
-    # class_names
-    # yolo_model
-    # model_image_size
-    # is_fixed_size
-    # input_image_shape
-    # boxes
-    # scores
-    # classes
-
     def __init__(self, model_path, anchors_path, classes_path, score_threshold, iou_threshold):
         self.class_names = self._load_class_names(classes_path)
         anchors = self._load_anchors(anchors_path)
