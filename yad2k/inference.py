@@ -42,8 +42,7 @@ class ObjectDetector:
 
         self.session = K.get_session()  # TODO: Remove dependence on Tensorflow session.
 
-    def detect(self, image_filepath):
-        image = Image.open(image_filepath)
+    def detect(self, image):
         image_data = self._transform_image(image)
 
         out_boxes, out_scores, out_classes = self.session.run(

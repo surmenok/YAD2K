@@ -9,7 +9,7 @@ import random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from .yad2k import ObjectDetector
+from yad2k import ObjectDetector
 
 parser = argparse.ArgumentParser(
     description='Run a YOLO_v2 style detection model on test images..')
@@ -78,11 +78,11 @@ def _main(args):
         print('Creating output path {}'.format(output_path))
         os.mkdir(output_path)
 
-    model = YoloModel(model_path, anchors_path, classes_path, args.score_threshold, args.iou_threshold)
+    detector = ObjectDetector(model_path, anchors_path, classes_path, args.score_threshold, args.iou_threshold)
     print('{} model, anchors, and classes loaded.'.format(model_path))
 
     # Generate colors for drawing bounding boxes.
-    colors = _generate_colors(model.class_names)
+    colors = _generate_colors(detector.class_names)
 
     for image_file in os.listdir(test_path):
         image_filepath = os.path.join(test_path, image_file)
@@ -93,10 +93,10 @@ def _main(args):
         except IsADirectoryError:
             continue
 
-        objects = model.detect(image_filepath)
-        print('Found {} objects for {}'.format(len(objects), image_file))
-
         image = Image.open(image_filepath)
+
+        objects = detector.detect(image)
+        print('Found {} objects for {}'.format(len(objects), image_file))
 
         font = ImageFont.truetype(
             font='font/FiraMono-Medium.otf',
